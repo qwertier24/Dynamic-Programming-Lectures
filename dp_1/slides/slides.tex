@@ -1,0 +1,73 @@
+\documentclass[hyperref={unicode=true}]{beamer}
+\usepackage{multirow}
+\usepackage{minted}
+\usepackage{amsmath} % used for boldsymbol.
+\renewcommand{\vec}[1]{\boldsymbol{#1}} % Uncomment for BOLD vectors.
+\usepackage[slantfont,boldfont]{xeCJK}
+\setCJKmainfont{SimSun}
+\setCJKmonofont{SimHei}
+\usetheme{Darmstadt}
+\usecolortheme{beaver}
+\usepackage{booktabs}
+
+\input zhwinfonts
+\begin{document}
+\setbeamertemplate{caption}[numbered]
+\renewcommand\figurename{图}
+\renewcommand\tablename{表}
+\renewcommand\contentsname{\centering 目录}
+
+%%------------------------------------------
+\title{动态规划进阶（一）}
+\subtitle{}
+\author{马玉坤}
+\institute{哈尔滨工业大学计算机科学与技术学院}
+\date{2017年8月17日}
+%%------------------------------------------
+
+\begin{frame}\titlepage\end{frame}
+
+  \section{区间动态规划}
+  \begin{frame}\frametitle{石子合并}
+    \framesubtitle{第九次CCF计算机软件能力认证}
+    \begin{block}{题目}
+      设有n堆石子排成一排，其编号为1,2,3,…,n ($n\leq500$)。每堆石子有一定的数量。现要将n堆石子合并成为一堆。归并的过程只能每次将相邻的两堆石子堆成一堆，合并的代价是两堆石子的石子数量和。这样n堆石子经过n-1次归并后成为一堆。\\
+      找出将n堆石子合并成一堆石子的最小总代价。
+    \end{block}
+  \end{frame}
+
+  \begin{frame}\frametitle{石子合并 (Cont'd)}
+    \framesubtitle{第九次CCF计算机软件能力认证}
+    \begin{exampleblock}{竟然可以过的解法}
+      设$dp[i][j]$表示第i堆到第j堆石子合并成一堆所需要的最小代价，那么我们有:
+      \[dp[i][j] = \min_{i < k \leq j}dp[i][k-1] + dp[k][j] + w[i][j]\]
+      其中$w[i][j]$表示第i堆到第j堆石子的石子数目和。
+    \end{exampleblock}
+  \end{frame}
+
+  \begin{frame}\frametitle{石子合并 (Cont'd)}
+    \framesubtitle{第九次CCF计算机软件能力认证}
+    \begin{alertblock}{四边形不等式}
+    \end{alertblock}
+  \end{frame}
+  \begin{frame}\frametitle{石子合并 (Cont'd)}
+    \framesubtitle{第九次CCF计算机软件能力认证}
+    \begin{exampleblock}{更快的解法}
+    \end{exampleblock}
+  \end{frame}
+
+  \begin{frame}\frametitle{Do Geese See God?}
+    \framesubtitle{Asia Tsukuba Regional Contest 2015 G}
+    \begin{block}{题目}
+      给定一个字符串，添加最少的字符使得这个字符串变成回文串。\\
+      \pause{}还没完。\\
+      在所有这样的最短的回文串中，找到字典序第$k$小的并输出。
+      字符串长度$\leq 2000$，$k \leq 10^{18}$。
+    \end{block}
+  \end{frame}
+  \begin{frame}\frametitle{Do Geese See God? (Cont'd)}
+    \framesubtitle{Asia Tsukuba Regional Contest 2015 G}
+
+  \end{frame}
+
+\end{document}
