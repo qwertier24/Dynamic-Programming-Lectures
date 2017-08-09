@@ -68,7 +68,7 @@
         g[i] = INF;
       }
       for (int i = 1; i <= n; i++) {
-        f[i] = lower_bound (g+1, g+n+1, a[i])-g;
+        f[i] = lower_bound(g+1, g+n+1, a[i]) - g;
         g[f[i]] =  a[i];
       }
     \end{minted}
@@ -293,7 +293,7 @@ for (int i = 1; i <= n; i++) {
 \end{frame}
 \begin{frame}\frametitle{石子合并 (Cont'd)}
   \begin{exampleblock}{更快的解法}
-    设$f[i][j]$为另$dp[i][j]$的最优决策点。可以证明:
+    设$f[i][j]$为令$dp[i][j]$的最优决策点。可以证明:
     \[f[i][j-1] \leq f[i][j] \leq f[i+1][j]\]
     这样，我们每次枚举k时，不需要从$i+1$枚举到$j$，只需要从$f[i][j-1]$枚举到$f[i+1][j]$。\\
   \end{exampleblock}
