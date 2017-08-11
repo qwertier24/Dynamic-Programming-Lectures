@@ -5,7 +5,7 @@
 \renewcommand{\vec}[1]{\boldsymbol{#1}} % Uncomment for BOLD vectors.
 \usepackage[slantfont,boldfont]{xeCJK}
 \setCJKmainfont{SimSun}
-\setCJKmonofont{FangSong}
+\setCJKmonofont{FZFangSong-Z02}
 \setCJKsansfont{SimHei}
 \usetheme{Darmstadt}
 \usecolortheme{beaver}
@@ -37,6 +37,8 @@
 \begin{frame}\titlepage\end{frame}
 
 \section{数位统计动态规划}
+
+\subsection{理论的东西}
 \begin{frame}\frametitle{数位统计动态规划}
   \begin{block}{一般形式}
     给定一个区间$[L,R]$，求在此区间内满足某个条件限制（特性）的数的个数或者加和。一般有多组询问。
@@ -62,6 +64,7 @@
   \end{alertblock}
 \end{frame}
 
+\subsection{Find a car}
 \begin{frame}{Find a car}\framesubtitle{Codeforces Round \#415 (Div. 1) C}
   \begin{block}{题目}
     给定一个无穷大的矩阵，其中第i行第j列的元素$mat(i,j)$为最小的不在集合$\{mat(1,j),mat(2,j),\ldots,mat(i-1,j), mat(i,1), mat(i,2), \ldots,mat(i,j-1)\}$中出现过的正整数。
@@ -82,7 +85,8 @@
   \begin{alertblock}{第一个问题}
     第i行第j列，即$mat(i,j)$该怎么求？能不能用一个简单的式子来表示？\\
     \pause{}先把矩阵里的每个元素都减1，行数和列数从1开始变为从0开始。\\
-    \pause{}此时可转化为两堆石子（分别为$i$和$j$），做NIM游戏。$mat(i,j)=\text{各个子状态的SG函数}=i \oplus j$ ($\oplus$为异或)。对于原矩阵就有$mat(i,j)=(i-1)\oplus (j-1) + 1$。不懂原理也没关系，今天我们的重点不在这。
+    \pause{}此时可转化为两堆石子（分别为$i$和$j$），做NIM游戏。$mat(i,j)=\text{各个子状态的SG函数}=i \oplus j$ ($\oplus$为异或)。对于原矩阵就有$mat(i,j)=(i-1)\oplus (j-1) + 1$。\\
+    {\bf 不懂原理也没关系，今天我们的重点不在这。}
   \end{alertblock}
 \end{frame}
 
@@ -128,6 +132,49 @@
   \end{exampleblock}
 \end{frame}
 
+\subsection{两种dp数组求解的写法}
+\begin{frame}[fragile]{递推求动态规划}
+  \begin{minted}{C++}
+for (int i = 0; i < n; i++) {
+  for (int j = volume[i]; j <= capacity; j++) {
+    dp[i][j] = max(dp[i-1][j], dp[i-1][j-volume[i]] + value[i]);
+  }
+}
+  \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]{递归求动态规划（记忆化搜索）}
+  \begin{minted}{C++}
+int dfs(int i, int j) {
+  if (i == 0) {
+    return 0;
+  }
+  if (vis[i][j]) {
+    return dp[i][j];
+  }
+  vis[i][j] = 1;
+  return dp[i][j] = max(dfs(i-1, j-1),
+                        dfs(i-1, j-volume[i]) + value[i]);
+}
+  \end{minted}
+\end{frame}
+\begin{frame}{两种方法的比较}
+  \begin{itemize}[<+->]
+  \item 递推的优势
+    \begin{enumerate}
+    \item 常数小
+    \item 不需递归，不怕爆栈
+    \end{enumerate}
+  \item 递归的优势
+    \begin{enumerate}
+    \item 对有效状态数较少的问题可大大提高效率，避免无效状态的搜索
+    \item 实现简单，更符合人类思维
+    \end{enumerate}
+  \end{itemize}
+\end{frame}
+
+
+\subsection{K-wolf Number}
 \begin{frame}{K-wolf Number (Cont'd)}\framesubtitle{2016 Multi-University Training Contest 5 07}
   \begin{block}{问题}
     K-wolf数字定义为：十进制表示下，任意相邻的k位数字都各不相同。\\
@@ -135,9 +182,24 @@
     $L,R\leq10^{18};K\leq5$
   \end{block}
 \end{frame}
-\begin{frame}{K-wolf Number (Cont'd)}\framesubtitle{2016 Multi-University Training Contest 5 07}
-  \begin{block}{问题}
 
+\begin{frame}{K-wolf Number (Cont'd)}\framesubtitle{2016 Multi-University Training Contest 5 07}
+  \begin{exampleblock}{解法}
+    转化为$1,\ldots,n$的K-wolf数个数的问题。\\
+    设$dp(i,j,k)$表示从最高位枚举到第i位，j表示已枚举的位有没有达到n的上限，k存的是已枚举的位中后k-1位的值。这样我们就能知道。\\
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}{K-wolf Number (Cont'd)}\framesubtitle{2016 Multi-University Training Contest 5 07}
+  \begin{exampleblock}{解法 (Cont'd)}
+    注意到一个问题：刚才的题目 (Find a car)中，我们实际上将所有数都加上了前导零，补成了31位。然而在这个题目中，如果我们仍然这么操作，从第8位开始枚举，补上前导零，把所有数都变成18位数，那么像29这样的数就会变成000000000000000029，不符合K-wolf数的定义 (有连续的0)，所以我们不能算上前导零。\\
+    \pause{}一种方案是：在dp状态中，加入一维指示之前枚举的位是否全是0。\\
+    另一种方案是：手动枚举数的位数以及最高位的数字，然后剩下再dp。
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}{K-wolf Number (Cont'd)}\framesubtitle{2016 Multi-University Training Contest 5 07}
+\end{frame}
 
 \section{状态压缩动态规划}
 
