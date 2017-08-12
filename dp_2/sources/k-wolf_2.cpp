@@ -15,8 +15,8 @@ using namespace std;
 #endif
 typedef long long LL;
 
-LL dp[20][2][10010][2];
-int vis[20][2][10010][2];
+LL dp[20][2][10010];
+int vis[20][2][10010];
 int K;
 bool check(int suf, int x) {
   for (int i = 0; i + 1 < K && suf / 10 > 0; i++) {
@@ -33,32 +33,38 @@ int newsuf(int suf, int x) {
   return suf;
 }
 vector<int> dig;
-LL dfs(int cur, int lim, int suf, int pre0) {
+LL dfs(int cur, int lim, int suf) {
   if (cur == -1)
-    return !pre0;
+    return 1;
 
-  if (!lim && vis[cur][lim][suf][pre0])
-    return dp[cur][lim][suf][pre0];
-  vis[cur][lim][suf][pre0] = 1;
+  if (!lim && vis[cur][lim][suf])
+    return dp[cur][lim][suf];
+  vis[cur][lim][suf] = 1;
 
-  LL &res = dp[cur][lim][suf][pre0];
+  LL &res = dp[cur][lim][suf];
   res = 0;
   REP (i, 10) {
     if (lim && i > dig[cur])
       break;
     if (check(suf, i))
-      res += dfs(cur-1, lim&(i==dig[cur]), pre0&&(i==0)?suf:newsuf(suf, i), pre0&(i==0));
+      res += dfs(cur-1, lim&(i==dig[cur]), newsuf(suf, i));
   }
   // printf("%d %d %d %d %I64d\n", cur, lim, suf, pre0, res);
   return res;
 }
 LL calc(LL n) {
   dig.clear();
-  REP (i, 19) {
+  while (n) {
     dig.push_back(n%10);
     n /= 10;
   }
-  return dfs(18, 1, 1, 1);
+  LL res = 0;
+  REP (i, dig.size()) {
+    FOR (j, 9)
+      if (i+1 != dig.size() || j <= dig.back())
+        res += dfs(i-1, (i+1 == dig.size() && j==dig.back()), 10+j);
+  }
+  return res;
 }
 
 int main() {

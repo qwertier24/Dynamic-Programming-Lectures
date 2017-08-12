@@ -1,2 +1,11 @@
 hihocoder 1536
 aziu 201x palindrome
+
+习题：
+最优二叉搜索树
+LIS
+石子合并
+palindrome counting
+palindrome mending
+玩具装箱
+HDOJ 3415
