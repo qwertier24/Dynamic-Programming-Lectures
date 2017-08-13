@@ -153,7 +153,8 @@
   \begin{minted}[fontfamily=zi4]{C++}
 for (int i = 0; i < n; i++) {
   for (int j = volume[i]; j <= capacity; j++) {
-    dp[i][j] = max(dp[i-1][j], dp[i-1][j-volume[i]] + value[i]);
+    dp[i][j] = max(dp[i-1][j],
+                   dp[i-1][j-volume[i]] + value[i]);
   }
 }
   \end{minted}
@@ -395,6 +396,7 @@ int dfs(int i, int j) {
   \end{exampleblock}
 \end{frame}
 
+\subsubsection{多米诺骨牌覆盖问题}
 \begin{frame}{多米诺骨牌覆盖问题}
   \begin{block}{问题}
     多米诺骨牌的大小为$1\times 2$，现在你要用多米诺骨牌去覆盖$n\times m$大小的方格图。使得方格图中的每个方格被且仅被一个多米诺骨牌的一格覆盖。\\
