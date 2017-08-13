@@ -205,7 +205,7 @@ for (int i = 1; i <= n; i++) {
   \framesubtitle{XVI Open Cup named after E.V. Pankratiev. GP of Ukraine, I}
   \begin{alertblock}{进一步的优化}
     如何快速求出$\sum_{l=k+1}^{j}(l-k)a[l]$？\\
-    \pause{}设$sum1[i] = \sum_{j=1}^i a[j]$，$sum2[i] = \sum_{j=1}^ij\times a[j]$，我们就有
+    \pause{}设$sum1[i] = \sum_{j=1}^i a[j]$，$sum2[i] = \sum_{j=1}^i{j}\times a[j]$，我们就有
     \[\text{原式}=sum2[j]-sum2[k]-k \times (sum1[j]-sum1[k])\]
     $O(mn^2)$
   \end{alertblock}
