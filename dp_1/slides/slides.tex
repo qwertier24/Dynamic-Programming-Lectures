@@ -36,8 +36,10 @@
 
 \begin{frame}\titlepage\end{frame}
 
+\begin{frame}\tableofcontents\end{frame}
 \section{1D/1D动态规划}
 
+\subsection{LIS的另一种解法}
 \begin{frame}\frametitle{再谈LIS}
   \begin{block}{问题}
     求出一个序列的所有子序列中，满足元素单调上升 (即$a_i<a_{i+1}$)的最长子序列。\\
@@ -75,6 +77,7 @@
   \end{exampleblock}
 \end{frame}
 
+\subsection{单调队列}
 \begin{frame}\frametitle{对区间长度加以限制的最大区间和问题}
   \begin{block}{问题}
     给定一个序列$a_1,a_2,\ldots,a_n$以及$L$和$R$，求最大的区间和，满足$L\leq$区间长度$\leq R$。
@@ -89,7 +92,6 @@
     \pause{}$a_{j+1},a_{j+2},\ldots,a_i$的和。
   \end{alertblock}
 \end{frame}
-
 
 \begin{frame}\frametitle{对区间长度加以限制的最大区间和问题 (Cont'd)}
   \begin{alertblock}{对问题的进一步分析}
@@ -183,6 +185,7 @@ for (int i = 1; i <= n; i++) {
   \end{exampleblock}
 \end{frame}
 
+\subsection{斜率优化}
 \begin{frame}\frametitle{Keyboard Map}
   \framesubtitle{XVI Open Cup named after E.V. Pankratiev. GP of Ukraine, I}
   \begin{block}{问题}
@@ -276,6 +279,7 @@ for (int i = 1; i <= n; i++) {
 \end{frame}
 
 \section{区间动态规划}
+\subsection{三角形不等式优化}
 \begin{frame}\frametitle{石子合并}
   \begin{block}{题目}
     设有n堆石子排成一排，其编号为1,2,3,…,n ($n\leq500$)。每堆石子有一定的数量。现要将n堆石子合并成为一堆。归并的过程只能每次将相邻的两堆石子堆成一堆，合并的代价是两堆石子的石子数量和。这样n堆石子经过n-1次归并后成为一堆。\\
@@ -332,6 +336,7 @@ for (int i = 1; i <= n; i++) {
   \end{exampleblock}
 \end{frame}
 
+\subsection{其他区间DP}
 \begin{frame}\frametitle{Do Geese See God?}
   \framesubtitle{Asia Tsukuba Regional Contest 2015 G}
   \begin{block}{题目}
