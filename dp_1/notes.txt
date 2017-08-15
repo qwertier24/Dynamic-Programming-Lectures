@@ -1,11 +1,10 @@
-hihocoder 1536
-aziu 201x palindrome
-
-习题：
-最优二叉搜索树
-LIS
-石子合并
-palindrome counting
-palindrome mending
-玩具装箱
-HDOJ 3415
+最优二叉搜索树 POJ 1784
+LIS POJ 1631
+LIS_easy POJ 2533
+取牌游戏 POJ 1651
+括号匹配 POJ 2955
+修复回文串 POJ 1159
+玩具装箱 BZOJ 1010
+k-subsequence HDOJ 3415
+概率-斜率优化 674C
+区间DP BZOJ 4380
