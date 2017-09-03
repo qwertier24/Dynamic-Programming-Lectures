@@ -1,0 +1,122 @@
+\documentclass[hyperref={unicode=true}]{beamer}
+\usepackage{multirow}
+\usepackage{minted}
+\usepackage{amsmath} % used for boldsymbol.
+\renewcommand{\vec}[1]{\boldsymbol{#1}} % Uncomment for BOLD vectors.
+\usepackage[slantfont,boldfont]{xeCJK}
+\setCJKmainfont{SimSun}
+\setCJKmonofont{FangSong}
+\setCJKsansfont{SimHei}
+\usetheme{Darmstadt}
+\usecolortheme{beaver}
+\usepackage{booktabs}
+\usepackage{tikz}
+\setbeamertemplate{theorems}[numbered]
+\newtheorem{mytht}{\bf 定理}
+\theoremstyle{definition}
+\newtheorem{mydef}[]{\bf 定义}
+\theoremstyle{proof}
+\newtheorem{myprf}[]{\bf 证明}
+\usepackage{ulem}
+\usepackage[T1]{fontenc}
+\usepackage{inconsolata}
+\makeatletter
+% there's no italic/slanted for Inconsolata
+\@namedef{T1/zi4/m/it}{<->ssub*zi4/m/n}
+\@namedef{T1/zi4/b/it}{<->ssub*zi4/b/n}
+\@namedef{T1/zi4/bx/it}{<->ssub*zi4/b/n}
+\@namedef{T1/zi4/m/sl}{<->ssub*zi4/m/n}
+\@namedef{T1/zi4/b/sl}{<->ssub*zi4/b/n}
+\@namedef{T1/zi4/bx/sl}{<->ssub*zi4/b/n}
+\makeatother
+
+\input zhwinfonts
+\begin{document}
+\setbeamertemplate{caption}[numbered]
+\renewcommand\figurename{图}
+\renewcommand\tablename{表}
+\renewcommand\contentsname{\centering 目录}
+
+
+%%------------------------------------------
+\title{动态规划进阶（二）练习题题解}
+\subtitle{}
+\author{马玉坤}
+\institute{哈尔滨工业大学计算机科学与技术学院}
+\date{2017年8月18日}
+%%------------------------------------------
+
+\begin{frame}\titlepage\end{frame}
+
+\begin{frame}{Magic Trick}
+  \framesubtitle{POJ 2282}
+  题意：给你一个区间，求这个区间内各个数位上，数字0-9分别出现的次数。\\
+  设$dp(i,j,k,l)$表示枚举到第i位的满足题意的数目的个数，j表示之前确定的高位是否已达到上限，k表示高位是否全为0，l表示统计的是0-9哪个数字。\\
+  减少转移的做法：当j=0 (高位未达到上限)时，第i位已经更低位可以随便填，这时候0-9是均匀分布的。
+\end{frame}
+
+\begin{frame}{Round Numbers}
+  \framesubtitle{POJ 3252}
+  题意：求区间$[L,R]$中所有满足二进制表示中1的个数等于0的个数的数的个数。\\
+  设$f(i,j,k,l)$表示枚举到第i位，j表示高位是否达到限制，k表示高位是否全为0（该题在统计时不能加入签到零），l等于已确定的位中1的个数与0的个数的差。
+\end{frame}
+
+\begin{frame}{windy数}
+  \framesubtitle{BZOJ 1026}
+  题意：求区间$[L,R]$内有多少个windy数。windy数的定义为：不含签到零且相邻两个数字之差至少为2的正整数。\\
+  设$f(i,j,k,l)$表示枚举到第i位，j表示高位是否达到限制，k表示高位是否全为0（该题在统计时不能加入签到零），l表示第i位填的数。
+\end{frame}
+
+
+\begin{frame}{Just Too Lucky}
+  \framesubtitle{NEERC 2008 J}
+  题意：求小于等于n的所有满足能整除各位数之和的数。比如$42 \mod 6 = 0$。\\
+  其实各位数之和最小为1，最大也就到$9 \times 12 = 108$，所以可以枚举各位数之和（设各位数之和为$j$），然后dp求各位数之和为j且能整除j的数的个数。\\
+  设$f (i,k,mod)$表示枚举到第i位，已经确定的位数对刚才枚举的j取模后的结果为mod的数字的个数，k表示高位是否达到上限。（本题目可以添加前导零。）
+\end{frame}
+
+\begin{frame}{Periodical Numbers}
+  \framesubtitle{Codeforces 215 E}
+  题意：求区间$[L,R]$内的周期二进制数个数。周期二进制数指的是能找到循环周期的二进制数，比如01110111。\\
+  枚举位数L，然后枚举周期长度P（周期长度需要满足整除位数），然后找小于等于n的位数为L，周期长度为P的二进制数个数。\\
+  设$f(i,j)$。i表示枚举到第i位，j表示高位是否达到上限。该题有前导零限制，但是由于我们手动枚举位数（也就是第一个1的位置），所以不需设置前导零标记。\\
+  注意，在dp过程中，我们需要检查是否违反了低位的限制。比如n=111000，如果我们高三位已经确定为111，这时候是不合法的；当然高三位如果是110，这时候就是合法的。
+\end{frame}
+
+\begin{frame}{Painter's Problem}
+  \framesubtitle{POJ 1681}
+  题意：给定一个矩阵，矩阵上每个格子有初始的颜色（黄色或者白色）。没次操作可以使一个格子以及周围4个格子反转颜色（黄变白，白变黄），问最少需要多少此操作，能让所有格子变成黄色。\\
+  枚举第一行的格子反不反转，就知道第二行该怎么做，然后就知道第i行该怎么做。\\
+  换句话说，枚举完第一行的决策，剩余行的决策就都确定了。
+\end{frame}
+
+\begin{frame}{Corn Fields}
+  \framesubtitle{POJ 3254}
+  题意：在一片M行N列的草地上（用0和1矩阵表示），1表示能放牛，0表示不能放。在草地上放牛并且牛不能相邻，问有多少种放法（一头牛都不放也算一种）。\\
+  设$f(i,S)$表示从第一行枚举到第i行，且第i行状态为S时的方案数。\\
+  假设第i行状态S的第j位为1（(i,j)放牛），那么第i-1行的第j为就必须为0，而第i行第j列为0，那么第i-1行第j列既可以为0，也可以为1。\\
+  直接状压压力不大，有兴趣可以搜索“高位前缀和”（本质也是状压）。
+\end{frame}
+
+\begin{frame}{Rectangular Covering}
+  \framesubtitle{POJ 2836}
+  平面上有n个点，现用平行于坐标轴的矩形去覆盖所有点，每个矩形至少盖两个点，矩形面积不可为0，求这些矩形的最小面积和。\\
+  因为面积最小化，所以每个矩形一定至少有两个端点与n个点中的两个点分别重合。\\
+  求出以每对点为端点形成的矩形所包含的点集($\frac{n(n-1)}{2}$对点)。
+  设$f(S)$表示覆盖的点集为S所需要的最小矩形面积，可以枚举这$n(n-1)/2$个矩形（设枚举到第i个矩形），用$f(S)+area(i)$去更新$f(S|cover(i))$。
+\end{frame}
+
+\begin{frame}{Mondriaan's Dream}
+  \framesubtitle{POJ 2411}
+  多米诺骨牌覆盖问题，见上午课件。
+\end{frame}
+
+\begin{frame}{Sherlock and the Encrypted Data}
+  \framesubtitle{Codeforces 776 G}
+  题意：求区间$[L,R]$内所有满足。。。题意挺麻烦的，大家直接看题目吧。\\
+  一个数异或另一个数变大还是变小，只跟另一个数的最高位的1有关。所以为了判断x是否是满足题意的数字，我们只需要关注x的16进制表示中数字最大的一位数（设这个数为i,$0 \leq i < 16$）以及x的二进制表示中的对应位（就是第i位）就可以。\\
+  所以我们可以枚举h，表示十六进制中表示中各位上最大的数为h。设方程$f(i,j,k,l)$。i表示枚举到第i位，j表示高位是否达到上限，k表示目前为止枚举的十六进制位中有没有出现过h，l表示前导0。需要注意的是，每一个十六进制位都需要小于等于h，而且二进制表示中第h位应该等于1。（这样异或$2^h$之后才能减小。）\\
+  官方题解用了{\bf 不同的做法}，把数位DP与状压DP结合了起来，大家也可以做一下参考。\\
+  \url{http://codeforces.com/blog/entry/50622}
+\end{frame}
+\end{document}

@@ -1,0 +1,115 @@
+\documentclass[hyperref={unicode=true}]{beamer}
+\usepackage{multirow}
+\usepackage{minted}
+\usepackage{amsmath} % used for boldsymbol.
+\renewcommand{\vec}[1]{\boldsymbol{#1}} % Uncomment for BOLD vectors.
+\usepackage[slantfont,boldfont]{xeCJK}
+\setCJKmainfont{SimSun}
+\setCJKmonofont{FangSong}
+\setCJKsansfont{SimHei}
+\usetheme{Darmstadt}
+\usecolortheme{beaver}
+\usepackage{booktabs}
+\usepackage{tikz}
+\setbeamertemplate{theorems}[numbered]
+\newtheorem{mytht}{\bf 定理}
+\theoremstyle{definition}
+\newtheorem{mydef}[]{\bf 定义}
+\theoremstyle{proof}
+\newtheorem{myprf}[]{\bf 证明}
+\usepackage{ulem}
+\usepackage[T1]{fontenc}
+\usepackage{inconsolata}
+\makeatletter
+% there's no italic/slanted for Inconsolata
+\@namedef{T1/zi4/m/it}{<->ssub*zi4/m/n}
+\@namedef{T1/zi4/b/it}{<->ssub*zi4/b/n}
+\@namedef{T1/zi4/bx/it}{<->ssub*zi4/b/n}
+\@namedef{T1/zi4/m/sl}{<->ssub*zi4/m/n}
+\@namedef{T1/zi4/b/sl}{<->ssub*zi4/b/n}
+\@namedef{T1/zi4/bx/sl}{<->ssub*zi4/b/n}
+\makeatother
+
+\input zhwinfonts
+\begin{document}
+\setbeamertemplate{caption}[numbered]
+\renewcommand\figurename{图}
+\renewcommand\tablename{表}
+\renewcommand\contentsname{\centering 目录}
+
+
+%%------------------------------------------
+\title{动态规划进阶（一）练习题题解}
+\author{马玉坤}
+\institute{哈尔滨工业大学计算机科学与技术学院}
+\date{2017年8月17日}
+%%------------------------------------------
+
+\begin{frame}\titlepage\end{frame}
+
+\begin{frame}{Huffman's Greed}
+  \framesubtitle{POJ 1784}
+  先求出$w[i][j]$，即数字$>a[i-1]$且$<a[i+1]$的概率。然后就有
+  \[dp[i][j] = \min_{k=i+1}^{j-1}dp[i][k-1] + dp[k+1][j] + w[i][j] \times 1\]
+  满足四边形不等式。
+\end{frame}
+
+\begin{frame}{Bridging signals}
+  \framesubtitle{POJ 1631}
+  最长上升子序列
+\end{frame}
+
+\begin{frame}{Longest Ordered Subsequence}
+  \framesubtitle{POJ 2533}
+  最长上升子序列
+\end{frame}
+\begin{frame}{Multiplication Puzzle}
+  \framesubtitle{POJ 1651}
+  经典区间动态规划，矩阵链乘。
+  \[dp[i][j] = \min_{k=i}^{j-1}{dp[i][k] + dp[k+1][j] + row[i] \times col[k] \times col[j]}\]
+\end{frame}
+
+\begin{frame}{Brackets}
+  \framesubtitle{POJ 2955}
+  最大括号匹配数目。
+  \begin{itemize}
+    \item 当s[i] $=$ s[j]时，$dp[i][j] = \max{(dp[i+1][j-1], \max_{k=i}^{j-1}{(dp[i][k]+dp[k+1][j])})}$
+    \item 当s[i] $\neq$ s[j]时，$dp[i][j] = \max_{k=i}^{j-1}{(dp[i][k]+dp[k+1][j])}$
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Brackets}{Palindrome}
+  \framesubtitle{POJ 1159}
+  添加最少字符使字符串变成回文串。\\
+  见上午课件
+\end{frame}
+
+\begin{frame}{玩具装箱}
+  \framesubtitle{BZOJ 1010}
+  设$a[i] = \sum_{j=1}^i{C[j]} + i$，可得
+  \[\frac{(dp[k]+a[k]^2)−(dp[j]+a[j]^2)}{a[k]−a[j]} < 2a[i]−2(l+1)\]
+\end{frame}
+
+\begin{frame}{Sliding Window}
+  \framesubtitle{POJ 2823}
+  滑动窗口，用单调队列即可。
+\end{frame}
+
+\begin{frame}{Levels and Regions}
+  \framesubtitle{Codeforces 674C}
+  \[dp[i][j] = \min_{k=1}^{j-1}{dp[i-1][k] + cost(k+1, i)}\]
+  怎么算$cost(k+1, i)$?
+  \[cost(l,r)=\sum_{i=l}^{r}\frac{\sum_{j=l}^{i}{t_j}}{t_i}\]
+  假设打$level_i$的概率是$p_i$，需要花费的期望时间是多少？
+  \[1 + (1-p_i) + {(1-p_i)}^2 + \ldots = \frac{1}{p_i}\]
+  原则：{\bf 独立性}。
+\end{frame}
+
+\begin{frame}{Sonya and Problem Wihtout a Legend}
+  \framesubtitle{Codeforces 713C}
+  先让$a[i]-=i$，变成一个单调不下降子序列的问题。\\
+  然后我们发现，每次调整一个数，都使它变成一个序列中已经存在的数，这样会得到最优方案。\\
+  所以dp状态可以设为：$dp[i][j]$表示第i个数变成了原序列中第j小的数的代价。
+\end{frame}
+
+\end{document}

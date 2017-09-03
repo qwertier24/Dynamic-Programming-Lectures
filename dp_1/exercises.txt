@@ -5,6 +5,6 @@ LIS_easy POJ 2533
 括号匹配 POJ 2955
 修复回文串 POJ 1159
 玩具装箱 BZOJ 1010
-k-subsequence HDOJ 3415
+k-subsequence POJ 2823
 概率-斜率优化 674C
 区间DP BZOJ 4380

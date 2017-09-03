@@ -59,7 +59,7 @@
     设$g[i]$为目前为止我们找到的所有长度为i的上升子序列的结尾元素中最小的那个。\\
     实际上$g[i]$是单调增加的，否则如果$g[i]\geq g[i+1]$，那么$g[i+1]$表示的那个长度为$i+1$的子序列中的倒数第二个元素显然小于$g[i]$。\\
     \pause{}如果序列$a[1],\ldots,a[i-1]$的$g$数组已经求完了，我们看怎么能得到$f[i]$以及序列$a[1],\ldots,a[i]$的$g$数组。\\
-    实际上，我们只要在$g$数组中，找到第大的小于$a[i]$的数。设这个数在$g$中的下标为$k$，那么$f[i]=k+1$。\\
+    实际上，我们只要在$g$数组中，找到最大的小于$a[i]$的数。设这个数在$g$中的下标为$k$，那么$f[i]=k+1$。\\
     $g$数组的变化也不大，只需要使$g[f[i]]$赋值为$a[i]$即可。
   \end{exampleblock}
 \end{frame}
@@ -149,7 +149,7 @@
           \draw[black,fill=black] (2,   2) circle (.2ex);
           \draw[black,fill=black] (2.5, 1.5) circle (.2ex);
 
-          \draw[thick] (0.5, 0.5) -- (1, 1) -- (2.5, 1.5);
+          \draw[thick] (1, 1) -- (2.5, 1.5);
 
           \draw	(0.5, 0.5) node[anchor=north]{{\scriptsize $1$}}
           (1, 1) node[anchor=north]{{\scriptsize $2$}}
@@ -157,7 +157,7 @@
           (2, 2) node[anchor=north]{{\scriptsize $4$}}
           (2.5, 1.5) node[anchor=north]{{\scriptsize $3$}};
 
-          \draw[dotted] (1,1) -- (2,2);
+          \draw[dotted] (0.5, 0.5) -- (1,1) -- (2,2);
 
         \end{tikzpicture}
         \caption{对$b_7=7$维护的决策集合}\label{fig:sliding_window2}
@@ -167,15 +167,17 @@
 \end{frame}
 \begin{frame}[fragile]\frametitle{对区间长度加以限制的最大区间和问题 (Cont'd)}
   \begin{exampleblock}{单调队列 (Cont'd)}
-    \begin{minted}{C++}
+    \scriptsize\begin{minted}{C++}
 for (int i = 1; i <= n; i++) {
   int j = i-L;// 将i-L加入决策集合
-  while (front < rear && q[rear].value < b[j]) {
-    ---rear; // 删除队尾的前缀和更大的元素
+  if (j >= 0) {
+    while (front <= rear && q[rear].value >= b[j]) {
+      --rear; // 删除队尾的前缀和更大的元素
+    }
+    ++rear;
+    q[rear].index = j;
+    q[rear].value = b[j];
   }
-  ++rear;
-  q[rear].index = j;
-  q[rear].value = b[j];
   if (q[front].index < i-R) {
     ++front; // 删除队列中已经不在合法决策区间中的元素
   }
@@ -238,7 +240,7 @@ for (int i = 1; i <= n; i++) {
 \begin{frame}[fragile]\frametitle{Keyboard Map (Cont'd)}
   \framesubtitle{XVI Open Cup named after E.V. Pankratiev. GP of Ukraine, I}
   \begin{exampleblock}{斜率优化 (Cont'd)}
-    把每个决策点抽象成一个平面上的点$(x[i],y[i])$，那么对于$i$，当$j$优于$k$且$j>k$时，满足点$i$与点$j$连接形成的线段的斜率$k < sum1[i]$。而且值得注意的是，$sum1[i]$随着$i$增加，是不断增加的。\\
+    把每个决策点抽象成一个平面上的点$(x[i],y[i])$，那么对于$i$，当$j$优于$k$且$j>k$时，满足点$j$与点$k$连接形成的线段的斜率$l < sum1[i]$。而且值得注意的是，$sum1[i]$随着$i$增加，是不断增加的。\\
     而且实际上，我们只需要维护一个下凸壳。
   \end{exampleblock}
 \end{frame}
@@ -279,7 +281,7 @@ for (int i = 1; i <= n; i++) {
 \end{frame}
 
 \section{区间动态规划}
-\subsection{三角形不等式优化}
+\subsection{四边形不等式优化}
 \begin{frame}\frametitle{石子合并}
   \begin{block}{题目}
     设有n堆石子排成一排，其编号为1,2,3,…,n ($n\leq500$)。每堆石子有一定的数量。现要将n堆石子合并成为一堆。归并的过程只能每次将相邻的两堆石子堆成一堆，合并的代价是两堆石子的石子数量和。这样n堆石子经过n-1次归并后成为一堆。\\
@@ -306,7 +308,7 @@ for (int i = 1; i <= n; i++) {
   \begin{exampleblock}{更快的解法 (Cont'd)}
     复杂度分析：
     \begin{align}
-      T(n) &= \sum_{i=1}^{n}\sum_{i=j}^n f[i+1][j]-f[i][j-1]\\
+      T(n) &= \sum_{i=1}^{n}\sum_{j=i}^n f[i+1][j]-f[i][j-1]\\
       &= \sum_{k=2}^n\sum_{j-i+1=k} f[i+1][j] - f[i][j-1]\\
       &= \sum_{k=2}^n f[n-k+2][n]-f[1][k-1]\\
       &\leq \sum_{k=2}^n n\\
@@ -363,11 +365,11 @@ f[i+1][j-1], &S[i]=S[j]\\
   \begin{alertblock}{第二个问题}
     给定一个字符串，问有多少种添加字符的方式，满足添加的字符数最少，而且使得字符串变为回文串。\\
     \pause{}这个问题跟第一个问题类似。设$g[i][j]$为子串$S[i \ldots j]$的方式数目。我们有
-\[f[i][j]=\begin{cases}
+\[g[i][j]=\begin{cases}
 g[i+1][j-1], &S[i] = S[j]\\
 g[i+1][j], &\substack{S[i]\neq S[j] \wedge f[i+1][j]+1=f[i][j] \\\wedge f[i][j-1]+1\neq f[i][j]}\\
 g[i][j-1], &\substack{S[i] \neq S[j] \wedge f[i][j-1]+1 = f[i][j] \\\wedge f[i+1][j]+1 \neq f[i][j]}\\
-g[i+1][j] + f[i][j-1], &\substack{S[i] \neq S[j] \wedge f[i][j-1]+1 = f[i][j] \\\wedge f[i+1][j] +1=f[i][j]}
+g[i+1][j] + g[i][j-1], &\substack{S[i] \neq S[j] \wedge f[i][j-1]+1 = f[i][j] \\\wedge f[i+1][j] +1=f[i][j]}
 \end{cases}\]
   \end{alertblock}
 \end{frame}

@@ -170,7 +170,7 @@ int dfs(int i, int j) {
     return dp[i][j];
   }
   vis[i][j] = 1;
-  return dp[i][j] = max(dfs(i-1, j-1),
+  return dp[i][j] = max(dfs(i-1, j),
                         dfs(i-1, j-volume[i]) + value[i]);
 }
   \end{minted}
@@ -458,7 +458,7 @@ int dfs(int i, int j) {
           (2.0, 0.5) node[anchor=south west]{{\scriptsize $0$}};
 
         \end{tikzpicture}
-        \caption{轮廓线示意图（这图画起来好麻烦的）}
+        \caption{轮廓线示意图}
       \end{figure}
     \end{minipage}
     \begin{minipage}{0.58\linewidth}
